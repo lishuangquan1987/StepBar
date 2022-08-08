@@ -2,11 +2,11 @@
 
 a wpf stepbar like below:
 
-![](Images\微信截图_20220808135604.png)
+![](https://github.com/lishuangquan1987/StepBar/blob/master/Images/微信截图_20220808135604.png)
 
-![](Images\微信截图_20220808135656.png)
+![](https://github.com/lishuangquan1987/StepBar/blob/master/Images/微信截图_20220808135656.png)
 
-![](Images\微信截图_20220808135731.png)
+![](https://github.com/lishuangquan1987/StepBar/blob/master/Images/微信截图_20220808135731.png)
 
 # UseAge:
 
