@@ -1,0 +1,22 @@
+﻿<Window
+    x:Class="WPF_StepControl.Test.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPF_StepControl.Test"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="clr-namespace:WPF_StepControl;assembly=WPF-StepControl"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid>
+        <s:StepBar Height="500" Margin="5,0,0,0" LineMinLength="10" CurrentIndex="1" Orientation="Horizontal">
+            <s:StepBarItem>化成</s:StepBarItem>
+            <s:StepBarItem>分容</s:StepBarItem>
+            <s:StepBarItem>OCV</s:StepBarItem>
+            <s:StepBarItem>DCIR</s:StepBarItem>
+            <s:StepBarItem>分选</s:StepBarItem>
+        </s:StepBar>
+    </Grid>
+</Window>

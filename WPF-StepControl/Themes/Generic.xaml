@@ -1,0 +1,230 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converter="clr-namespace:WPF_StepControl.Converter" xmlns:local="clr-namespace:WPF_StepControl">
+
+    <FontFamily x:Key="FontAwesome">/WPF-StepControl;component/#fontawesome</FontFamily>
+    <converter:IsLastItemConverter x:Key="IsLastItemConverter" />
+    <converter:IsProgressedConverter x:Key="IsProgressedConverter" />
+
+    <Style TargetType="{x:Type local:StepBarItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:StepBarItem}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <Grid Margin="0,0,3,0">
+                                <TextBlock
+                                    x:Name="path"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    FontSize="20"
+                                    FontWeight="Light"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Text="&#xf05d;"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Border
+                            x:Name="Line"
+                            Grid.Column="1"
+                            MinWidth="{Binding LineMinLength, RelativeSource={RelativeSource AncestorType=local:StepBar}}"
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            BorderBrush="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}"
+                            BorderThickness="0,1,0,0"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True"
+                            Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsLastItemConverter}">
+                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="Items.Count" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Line" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                        </DataTrigger>
+                        <DataTrigger Value="False">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsLastItemConverter}">
+                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="Items.Count" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Line" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Value="Less">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Line" Property="BorderBrush" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                            <Setter TargetName="path" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                        </DataTrigger>
+                        <DataTrigger Value="Equal">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Line" Property="BorderBrush" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                            <Setter TargetName="path" Property="Visibility" Value="Visible" />
+                            <Setter Property="Foreground" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                        </DataTrigger>
+                        <DataTrigger Value="Large">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="Line" Property="BorderBrush" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                            <Setter TargetName="path" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Foreground" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Orientation, RelativeSource={RelativeSource AncestorType=local:StepBar}}" Value="Vertical">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type local:StepBarItem}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical">
+                                    <Grid Margin="0,0,0,0">
+                                        <TextBlock
+                                            x:Name="path"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{StaticResource FontAwesome}"
+                                            FontSize="20"
+                                            FontWeight="Thin"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            Text="&#xf05d;"
+                                            Visibility="Collapsed" />
+                                    </Grid>
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <Border
+                                    x:Name="Line"
+                                    Grid.Row="1"
+                                    MinHeight="{Binding LineMinLength, RelativeSource={RelativeSource AncestorType=local:StepBar}}"
+                                    Margin="13,0,0,0"
+                                    VerticalAlignment="Center"
+                                    BorderBrush="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}"
+                                    BorderThickness="1,0,0,0"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource IsLastItemConverter}">
+                                            <Binding RelativeSource="{RelativeSource Self}" />
+                                            <Binding Path="Items.Count" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Line" Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                </DataTrigger>
+                                <DataTrigger Value="False">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource IsLastItemConverter}">
+                                            <Binding RelativeSource="{RelativeSource Self}" />
+                                            <Binding Path="Items.Count" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Line" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Value="Less">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                            <Binding RelativeSource="{RelativeSource Self}" />
+                                            <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Line" Property="BorderBrush" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                    <Setter TargetName="path" Property="Visibility" Value="Visible" />
+                                    <Setter Property="Foreground" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                </DataTrigger>
+                                <DataTrigger Value="Equal">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                            <Binding RelativeSource="{RelativeSource Self}" />
+                                            <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Line" Property="BorderBrush" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                    <Setter TargetName="path" Property="Visibility" Value="Visible" />
+                                    <Setter Property="Foreground" Value="{Binding ActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                </DataTrigger>
+                                <DataTrigger Value="Large">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource IsProgressedConverter}">
+                                            <Binding RelativeSource="{RelativeSource Self}" />
+                                            <Binding Path="CurrentIndex" RelativeSource="{RelativeSource AncestorType={x:Type local:StepBar}}" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Line" Property="BorderBrush" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                    <Setter TargetName="path" Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Foreground" Value="{Binding UnActivateColor, RelativeSource={RelativeSource AncestorType=local:StepBar}}" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type local:StepBar}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:StepBar}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ScrollViewer PanningMode="HorizontalOnly" VerticalScrollBarVisibility="Disabled">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Orientation}" Value="Vertical">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel IsItemsHost="True" Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
